@@ -1,19 +1,10 @@
-'''Trains a Bidirectional LSTM on the IMDB sentiment classification task.
-
-Output after 4 epochs on CPU: ~0.8146
-Time per epoch on CPU (Core i7): ~150s.
-'''
-
-from __future__ import print_function
 import numpy as np
-
 from keras.preprocessing import sequence
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Embedding, LSTM, Bidirectional
 from keras.datasets import imdb
+from keras.models import load_model
 np.random.seed(7)
-
-
 
 max_features = 20000
 # cut texts after this number of words
@@ -34,21 +25,7 @@ print('x_test shape:', x_test.shape)
 y_train = np.array(y_train)
 y_test = np.array(y_test)
 
-model = Sequential()
-model.add(Embedding(max_features, 128, input_length=maxlen))
-model.add(Bidirectional(LSTM(64)))
-model.add(Dropout(0.5))
-model.add(Dense(1, activation='sigmoid'))
-
-# try using different optimizers and different optimizer configs
-model.compile('adam', 'binary_crossentropy', metrics=['accuracy'])
-
-print(model.summary())
-print('Train...')
-model.fit(x_train, y_train,
-          batch_size=batch_size,
-          epochs=4,
-          validation_data=[x_test, y_test])
+model = load_model('biLSTM_model.h5')
 score, acc = model.evaluate(x_test, y_test, batch_size=batch_size)
 print('Test score:', score)
 print('Test accuracy:', acc)
