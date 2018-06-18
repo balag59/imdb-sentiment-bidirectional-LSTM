@@ -25,7 +25,7 @@ print('x_test shape:', x_test.shape)
 y_train = np.array(y_train)
 y_test = np.array(y_test)
 
-model = load_model('biLSTM_model.h5')
+model = load_model('model/model-13.hdf5')
 score, acc = model.evaluate(x_test, y_test, batch_size=batch_size)
 print('Test score:', score)
 print('Test accuracy:', acc)
